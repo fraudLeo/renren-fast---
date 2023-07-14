@@ -4,7 +4,7 @@
       :data="menus"
       :props="defaultProps"
       :expand-on-click-node="false"
-      show-checkbox="true"
+      show-checkbox
       node-key="catId"
     >
       <span class="custom-tree-node" slot-scope="{ node, data }">
@@ -62,6 +62,31 @@ export default {
     },
 
     remove(node, data) {
+      var ids = [data.catId];
+      this.$confirm("是否删除？","提示"{
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(()=> {
+        this.$message({
+            type: "success",
+            message:"删除成功！"
+        });
+      }).catch(()=> {
+        this.$message({
+            type: "info",
+            message:"已取消删除"
+        });
+      })
+      this.$http({
+        url: this.$http.adornUrl("/product/category/delete"),
+        method: "post",
+        data: this.$http.adornData(ids, false)
+      }).then(({ data }) => {
+        this.getMenus();
+        console.log("删除成功");
+
+      });
       console.log("remove", node, data);
     }
   },
