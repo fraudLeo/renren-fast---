@@ -15,7 +15,10 @@
       <el-input v-model="dataForm.descript" placeholder="介绍"></el-input>
     </el-form-item>
     <el-form-item label="显示状态" prop="showStatus">
-      <el-switch v-model="dataForm.showStatus" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+      <el-switch v-model="dataForm.showStatus" active-color="#13ce66" inactive-color="#ff4949"
+      :active-value="1"
+        :inactive-value="0"
+      ></el-switch>
     </el-form-item>
     <el-form-item label="检索首字母" prop="firstLetter">
       <el-input v-model="dataForm.firstLetter" placeholder="检索首字母"></el-input>
@@ -44,9 +47,9 @@ import SingleUpload from "@/components/upload/singleUpload.vue"
                 name: "",
                 logo: "",
                 descript: "",
-                showStatus: "",
+                showStatus: 1,
                 firstLetter: "",
-                sort: ""
+                sort: 0
             },
             dataRule: {
                 name: [
@@ -62,10 +65,26 @@ import SingleUpload from "@/components/upload/singleUpload.vue"
                     { required: true, message: "显示状态[0-不显示；1-显示]不能为空", trigger: "blur" }
                 ],
                 firstLetter: [
-                    { required: true, message: "检索首字母不能为空", trigger: "blur" }
+                    { validator: (role, value, callback)=> {
+                        if(value==null) {
+                            callback(new Error("首字母必须填写"));
+                        } else if(!/^[a-zA-Z]$/.test(value)){
+                            callback(new Error("首字符必须为字母"));
+                        } else {
+                            callback();
+                        }
+                    }, trigger: "blur" }
                 ],
                 sort: [
-                    { required: true, message: "排序不能为空", trigger: "blur" }
+                    { validator: (role,value,callback)=> {
+                        if(value==null) {
+                            callback(new Error("排序字母必须填写"));
+                        } else if(!/^[0-9]*$/.test(value)) {
+                            callback(new Error("你写了非数字捏"))
+                        } else {
+                            callback();
+                        }
+                    }, trigger: "blur" }
                 ]
             }
         };
