@@ -28,7 +28,7 @@
       <el-table-column prop="name" header-align="center" align="center" label="品牌名"></el-table-column>
       <el-table-column prop="logo" header-align="center" align="center" label="品牌logo地址">
         <template slot-scope="scope">
-          <el-image style="width:100px;height:80px" :src="scope.row.logo" :fit="fill"></el-image>
+          <el-image style="width:100px;height:80px" :src="scope.row.logo" fit="fill"></el-image>
         </template>
       </el-table-column>
       <el-table-column prop="descript" header-align="center" align="center" label="介绍"></el-table-column>
@@ -68,6 +68,7 @@
 </template>
 
 <script>
+
 import AddOrUpdate from "./brand-add-or-update";
 export default {
   data() {
@@ -94,7 +95,7 @@ export default {
     updateBrandStatus(status) {
       let { brandId, showStatus } = status;
       this.$http({
-        url: this.$http.adornUrl("/product/brand/update"),
+        url: this.$http.adornUrl("/product/brand/update/status"),
         method: "post",
         data: this.$http.adornData(
           { brandId, showStatus: showStatus ? 1 : 0 },
