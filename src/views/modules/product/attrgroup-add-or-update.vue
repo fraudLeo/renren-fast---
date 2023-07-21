@@ -3,6 +3,7 @@
     :title="!dataForm.attrGroupId ? '新增' : '修改'"
     :close-on-click-modal="false"
     :visible.sync="visible"
+    @closed="dialogClose"
   >
     <el-form
       :model="dataForm"
@@ -46,7 +47,8 @@ export default {
       categorys:[],
       visible: false,
       dataForm: {
-        attrGroupId: 0,
+        catelogId:0,
+        // attrGroupId: 0,
         attrGroupName: "",
         sort: "",
         descript: "",
@@ -69,6 +71,12 @@ export default {
     };
   },
   methods: {
+    dialogClose() {
+      this.dataForm.catelogIds = [];
+    },
+
+
+
     getCategorys() {
       this.$http({
         url: this.$http.adornUrl("/product/category/list/tree"),
@@ -101,7 +109,7 @@ export default {
               //查出catelogId完整路径,全部ids都替换成path
               // this.dataForm.catelogPath = data.attrGroup.catelogPath;
               this.dataForm.catelogIds = data.attrGroup.catelogPath;
-
+              console.log(this.dataForm.catelogIds);
             }
           });
         }
