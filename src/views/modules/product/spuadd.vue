@@ -675,15 +675,18 @@ export default {
           params: this.$http.adornParams({})
         }).then(({ data }) => {
           //先对表单的baseAttrs进行初始化
+          console.log(data);
           data.data.forEach(item => {
             let attrArray = [];
-            item.attrs.forEach(attr => {
+            if(item.attrs!=null) {
+              item.attrs.forEach(attr => {
               attrArray.push({
                 attrId: attr.attrId,
                 attrValues: "",
                 showDesc: attr.showDesc
               });
             });
+            }
             this.dataResp.baseAttrs.push(attrArray);
           });
           this.dataResp.steped[0] = 0;
