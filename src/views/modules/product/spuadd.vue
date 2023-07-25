@@ -355,6 +355,7 @@ export default {
   props: {},
   data() {
     return {
+      PubSub:[],
       catPathSub: null,
       brandIdSub: null,
       uploadDialogVisible: false,

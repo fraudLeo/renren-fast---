@@ -1,11 +1,10 @@
 <template>
   <div>
     <el-upload
-      action="https://gulimall-1307858615.cos.ap-nanjing.myqcloud.com"
+      action="http://localhost:88/api/third_party/file/upload"
       :data="dataObj"
       :list-type="listType"
       :file-list="fileList"
-      :before-upload="beforeUpload"
       :on-remove="handleRemove"
       :on-success="handleUploadSuccess"
       :on-preview="handlePreview"
@@ -63,6 +62,7 @@ export default {
       let fileList = [];
       for (let i = 0; i < this.value.length; i++) {
         fileList.push({ url: this.value[i] });
+        // console.log(fileList);
       }
 
       return fileList;
@@ -84,32 +84,15 @@ export default {
       this.dialogVisible = true;
       this.dialogImageUrl = file.url;
     },
-    beforeUpload(file) {
-      let _self = this;
-      return new Promise((resolve, reject) => {
-        policy()
-          .then(response => {
-            console.log("这是什么${filename}");
-            _self.dataObj.policy = response.data.policy;
-            _self.dataObj.signature = response.data.signature;
-            _self.dataObj.ossaccessKeyId = response.data.accessid;
-            _self.dataObj.key = response.data.dir +getUUID()+"_${filename}";
-            _self.dataObj.dir = response.data.dir;
-            _self.dataObj.host = response.data.host;
-            resolve(true);
-          })
-          .catch(err => {
-            console.log("出错了...",err)
-            reject(false);
-          });
-      });
-    },
+   
     handleUploadSuccess(res, file) {
-      this.fileList.push({
-        name: file.name,
-        // url: this.dataObj.host + "/" + this.dataObj.dir + "/" + file.name； 替换${filename}为真正的文件名
-        url: this.dataObj.host + "/" + this.dataObj.key.replace("${filename}",file.name)
-      });
+      // this.fileList.push({
+      //   name: file.name,
+      //   // url: this.dataObj.host + "/" + this.dataObj.dir + "/" + file.name； 替换${filename}为真正的文件名
+      //   url: this.dataObj.host + "/" + this.dataObj.key.replace("${filename}",file.name)
+      // });
+      this.fileList.push({name: file.name, url: res.returnUrl });
+      // console.log(res,file);
       this.emitInput(this.fileList);
     },
     handleExceed(files, fileList) {
@@ -124,5 +107,3 @@ export default {
 </script>
 <style>
 </style>
-
-
