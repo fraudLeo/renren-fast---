@@ -102,14 +102,16 @@ export default {
         method: "get",
         params: this.$http.adornParams({})
       }).then(({ data }) => {
-        //先对表单的baseAttrs进行初始化
+        if(data.data!=null) {
+          //先对表单的baseAttrs进行初始化
         data.data.forEach(item => {
           let attrArray = [];
-          item.attrs.forEach(attr => {
+          if(item.attrs!=null) {
+            item.attrs.forEach(attr => {
             let v = "";
             if (_this.spuAttrsMap["" + attr.attrId]) {
               v = _this.spuAttrsMap["" + attr.attrId].attrValue.split(";");
-              if (v.length == 1) {
+              if (v.length == 1 ) {
                 v = v[0] + "";
               }
             }
@@ -122,9 +124,11 @@ export default {
                 : attr.showDesc
             });
           });
+          }
           this.dataResp.baseAttrs.push(attrArray);
         });
         this.dataResp.attrGroups = data.data;
+        }
       });
     },
     submitSpuAttrs() {
